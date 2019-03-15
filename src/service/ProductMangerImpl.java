@@ -5,7 +5,7 @@ import model.Product;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProductManger implements ProductManagerImp {
+public class ProductMangerImpl implements ProductManager {
     static Map<Integer,Product> products = new HashMap<>();
     static {
         //Map<Integer,Product> products = new HashMap<>();???

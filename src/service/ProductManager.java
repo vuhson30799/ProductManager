@@ -5,7 +5,7 @@ import model.Product;
 import java.util.List;
 import java.util.Map;
 
-public interface ProductManagerImp {
+public interface ProductManager {
     Map<Integer,Product> getListProduct();
     void addProduct(Product product);
     void updateProduct(Product product,String id);

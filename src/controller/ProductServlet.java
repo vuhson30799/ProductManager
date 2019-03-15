@@ -1,7 +1,7 @@
 package controller;
 
 import model.Product;
-import service.ProductManger;
+import service.ProductMangerImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet(name = "ProductServlet",urlPatterns ="/list")
 public class ProductServlet extends HttpServlet {
-    private ProductManger productManger = new ProductManger();
+    private ProductMangerImpl productManger = new ProductMangerImpl();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //parameter lay bien action o dau ? o ca jsp va url?
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -32,6 +28,9 @@ public class ProductServlet extends HttpServlet {
                 break;
             case "delete":
                 deleteProduct(request, response);
+                break;
+            default:
+                showListProduct(request,response);
         }
     }
 

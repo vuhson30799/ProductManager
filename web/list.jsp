@@ -11,21 +11,6 @@
 <html>
 <head>
     <title>Product List</title>
-    <style>
-        table{
-            width: 50%;
-            height: 50%;
-            margin: 10px 10px 10px 30%;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        form{
-            margin-left: 50%;
-        }
-        h1,h2{
-            padding-left: 50%;
-        }
-    </style>
 </head>
 <body>
 <h1>Product List:</h1>
