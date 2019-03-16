@@ -1,6 +1,7 @@
 package controller;
 
 import model.Product;
+import service.ProductManager;
 import service.ProductMangerImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet(name = "ProductServlet",urlPatterns ="/list")
 public class ProductServlet extends HttpServlet {
-    private ProductMangerImpl productManger = new ProductMangerImpl();
+    private ProductManager productManger = new ProductMangerImpl();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
@@ -86,13 +87,17 @@ public class ProductServlet extends HttpServlet {
                 name = request.getParameter("name"),
                 number = request.getParameter("number"),
                 price = request.getParameter("price");
-        Product product = new Product(Integer.parseInt(id),name,Double.parseDouble(price),Integer.parseInt(number),date);
 
-        productManger.addProduct(product);
+        String message;
 
-        String message = "Create successfully";
+        try {
+            productManger.addProduct(id,name,date,number,price);
+            message = "Create successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = "Error!!" + e.getMessage();
+        }
         request.setAttribute("message",message);
-
         dispatcher(request,response,"/create.jsp");
 
     }
@@ -104,17 +109,24 @@ public class ProductServlet extends HttpServlet {
                 number = request.getParameter("number"),
                 price = request.getParameter("price");
 
-        Product product = productManger.findProductById(id);
-        product.setName(name);
-        product.setPrice(Double.parseDouble(price));
-        product.setNumber(Integer.parseInt(number));
-        product.setDate(date);
-
-        productManger.updateProduct(product,id);
-
-        String message = "Update successful";
-        request.setAttribute("message",message);
-
+        String errMess = null;
+        try{
+            productManger.updateProduct(id,name,date,number,price);
+            String message = "Update successful";
+            request.setAttribute("message",message);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            if (e.getMessage().equals("Price is invalid")){
+                errMess = "Price is invalid";
+            }else {
+                errMess = "Number is invalid";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            errMess = "Date is invalid";
+        }
+        request.setAttribute("errMess",errMess);
+        request.setAttribute("product",productManger.findProductById(id));
         dispatcher(request,response,"/edit.jsp");
 
     }

@@ -22,7 +22,7 @@
         <table>
             <tr>
                 <td>Id:</td>
-                <td><input type="text" value="${product.getId()}" name="id"/></td>
+                <td>${product.getId()}</td>
             </tr>
             <tr>
                 <td>Name:</td>
@@ -31,14 +31,23 @@
             <tr>
                 <td>Price:</td>
                 <td><input type="text" value="${product.getPrice()}" name="price"/></td>
+                <c:if test="${errMess =='Price is invalid'}">
+                    <td style="color: red;">${errMess}</td>
+                </c:if>
             </tr>
             <tr>
                 <td>Number:</td>
                 <td><input type="text" value="${product.getNumber()}" name="number"/></td>
+                <c:if test="${errMess == 'Number is invalid'}">
+                    <td style="color: red;">${errMess}</td>
+                </c:if>
             </tr>
             <tr>
                 <td>Date:</td>
                 <td><input type="text" value="${product.getDate()}" name="date"/></td>
+                <c:if test="${errMess == 'Date is invalid'}">
+                    <td style="color: red;">${errMess}</td>
+                </c:if>
             </tr>
         </table>
     </fieldset>

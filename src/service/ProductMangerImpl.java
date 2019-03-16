@@ -4,6 +4,8 @@ import model.Product;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProductMangerImpl implements ProductManager {
     static Map<Integer,Product> products = new HashMap<>();
@@ -22,14 +24,20 @@ public class ProductMangerImpl implements ProductManager {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void addProduct(String id, String name, String date, String number, String price) throws Exception {
+        checkConvertString(id,name,date,number,price);
+        Product product = new Product(Integer.parseInt(id),name,Double.parseDouble(price),Integer.parseInt(number),date);
         products.put(product.getId(),product);
     }
 
     @Override
-    public void updateProduct(Product product,String id) {
-        Product product1 = products.get(Integer.parseInt(id));
-        product1 = product;
+    public void updateProduct(String id,String name,String date,String number,String price) throws Exception {
+        Product product = this.findProductById(id);
+        checkConvertString(id,name,date,number,price);
+        product.setName(name);
+        product.setPrice(Double.parseDouble(price));
+        product.setNumber(Integer.parseInt(number));
+        product.setDate(date);
 
     }
 
@@ -46,5 +54,51 @@ public class ProductMangerImpl implements ProductManager {
     @Override
     public Product findProductByName(String name) {
         return null;
+    }
+
+    private void checkConvertString(String id,String name,String date,String number,String price) throws Exception{
+        try{
+            Double.parseDouble(price);
+        }catch (NumberFormatException e){
+            throw new NumberFormatException("Price is invalid");
+        }
+        try{
+            Integer.parseInt(number);
+        }catch (NumberFormatException e){
+            throw new NumberFormatException("Number is invalid");
+        }
+
+        String REGEX_DATE ="^[\\d]{1,2}/[\\d]{1,2}/[\\d]{4}$";
+        Pattern pattern = Pattern.compile(REGEX_DATE),
+                pattern1 = Pattern.compile("/");
+        Matcher matcher = pattern.matcher(date);
+
+
+        if (matcher.matches()){
+            String[] strings = pattern1.split(date);
+            int day = Integer.parseInt(strings[0]),
+                    month = Integer.parseInt(strings[1]),
+                    year = Integer.parseInt(strings[2]);
+
+            if (day > 31){
+                throw new Exception("Date is invalid");
+            }else if (day >29 && month == 2){
+                throw new Exception("Date is invalid");
+            }else if (year % 4 != 0){
+                if (day > 28 && month == 2){
+                    throw new Exception("Date is invalid");
+                }
+            }
+            if (month > 12 || month < 1){
+                throw new Exception("Date is invalid");
+            }
+            if (month == 4 || month == 6 || month == 9 || month == 11){
+                if (day > 30){
+                    throw new Exception("Date is invalid");
+                }
+            }
+        }else {
+            throw new Exception("Date is invalid");
+        }
     }
 }

@@ -14,7 +14,7 @@
 </head>
 <body>
 <c:if test="${message != null}">
-    <h2>${message}</h2>
+    <h2 style="color: red;">${message}</h2>
 </c:if>
 <p><a href="list">Back to product list</a> </p>
 <form method="post">
@@ -25,7 +25,7 @@
         <table>
             <tr>
                 <td>Id:</td>
-                <td><input type="text" placeholder="xxxx" name="id"/></td>
+                <td><input type="text" placeholder="xxxx" name="id" value=""/></td>
             </tr>
             <tr>
                 <td>Name:</td>

@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>Product List</title>
+    <link type="text/css" rel="stylesheet" href="WEB-INF/css/list.css">
 </head>
 <body>
 <h1>Product List:</h1>
